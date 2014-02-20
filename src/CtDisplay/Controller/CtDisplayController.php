@@ -14,6 +14,7 @@ use Application\ConfigAwareInterface;
 use Zend\Config\Config;
 use ZendServer\Set;
 use ZendServer\FS\FS;
+use Zend\Uri\UriFactory;
 
 class CtDisplayController extends AbstractActionController implements ConfigAwareInterface
 {
@@ -25,10 +26,48 @@ class CtDisplayController extends AbstractActionController implements ConfigAwar
     public function indexAction()
     {
         $file = FS::getFileObject(FS::createPath($this->config['filepath'], 'hhvm.trace'), 'r');
+        $state = false;
+        $metadata = array();
+        $frames = array();
+        $calls = array();
+        while (! $file->eof()) {
+            $line = trim($file->current());
+            $file->next();
+            
+            if (substr($line, 0, 2) == '>>') {
+                $state = substr($line, 2);
+                continue;
+            } elseif (substr($line, 0, 2) == '<<') {
+                $state = false;
+                continue;
+            }
+            
+            $info = explode('|', $line);
+            switch ($state) {
+            	case 'GLOBAL':
+            	    $metadata[] = $info[1];
+            	    break;
+            	case 'CALLSTACK':
+            	    $indent = str_repeat(' ', $info[0]);
+            	    $frames[] = "{$indent}{$info[1]} on {$info[2]}:{$info[3]}";
+                    break;
+                case 'CALLS':
+                    if ($info[0] != '{main}') {
+                        if ($info[1] == 1) {
+                            $calls[] = "{$info[0]} was called once";
+                        } else {
+                    	    $calls[] = "{$info[0]} was called {$info[1]} times";
+                        }
+                    }
+                	break;
+            	case false:
+                default:
+            }
+        }
         
-        $metadata = $file->current();
-        $file->next();
-        return array('frames' => $file, 'metadata' => $metadata);
+        $metadata = UriFactory::factory(implode(array_reverse($metadata)));
+        
+        return array('frames' => $frames, 'metadata' => $metadata, 'calls' => $calls);
     }
     
 	/* (non-PHPdoc)

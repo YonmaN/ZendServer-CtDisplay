@@ -2,5 +2,12 @@
 <strong>Controller:</strong>    CtDisplay &raquo;
 <strong>Action:</strong>        index
 
-<pre><?php echo htmlentities($frames->readAll()) ?></pre>
+<div style="margin-top:16px">
+<h2>Request information</h2>
+<pre><?php echo $metadata ?></pre>
+<h2>Execution trace</h2>
+<pre><?php foreach($frames as $frame) echo $frame, PHP_EOL ?></pre>
+<h2>Function calls</h2>
+<pre><?php foreach($calls as $call) echo $call, PHP_EOL ?></pre>
 
+</div>
