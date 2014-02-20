@@ -10,4 +10,17 @@ return array(
             'CtDisplay' => __DIR__ . '/../view',
         ),
     ),
+    'navigation' => array(
+    	'default' => array(
+			'overview' => array(
+				'pages' => array(
+				    array(
+				    		'label' => 'HipTrace',
+				    		'controller' => 'CtDisplay',
+				    		'route' => 'default'
+				    ),
+			    )
+		    )
+	    )
+    )
 );
