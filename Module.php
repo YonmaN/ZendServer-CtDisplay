@@ -15,8 +15,7 @@ use Zend\EventManager\EventInterface;
 
 class Module implements AutoloaderProviderInterface, BootstrapListenerInterface
 {
-    public function getAutoloaderConfig()
-    {
+    public function getAutoloaderConfig() {
         return array(
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
@@ -26,8 +25,7 @@ class Module implements AutoloaderProviderInterface, BootstrapListenerInterface
         );
     }
 
-    public function getConfig()
-    {
+    public function getConfig() {
         return include __DIR__ . '/config/module.config.php';
     }
     
