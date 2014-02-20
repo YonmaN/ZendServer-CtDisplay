@@ -6,7 +6,7 @@
 <h2>Request information</h2>
 <pre><?php echo $metadata ?></pre>
 <h2>Execution trace</h2>
-<pre>
+<pre style="height: 280px; overflow-y:scroll;">
 <?php foreach($frames as $frame): ?>
 <?php
     $prefix = '';
@@ -15,7 +15,7 @@
         $prefix = '<font style="color:red">';
         $suffix = '</font>';
     } elseif(strpos($frame, '***WARNING***') !== false) {
-        $prefix = '<font style="color:gold">';
+        $prefix = '<font style="color:orange">';
         $suffix = '</font>';
     }
 ?>
@@ -23,8 +23,9 @@
 <?php endforeach ?>
 </pre>
 <h2>Function calls</h2>
-<table id="callstable" style="width: 400px; margin: 16px"></table>
-
+<div style=" height: 280px; overflow-y: scroll">
+<table id="callstable" style="width: 400px; margin: 16px;"></table>
+</div>
 </div>
 
 <?php 
