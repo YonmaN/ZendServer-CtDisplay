@@ -8,6 +8,47 @@
 <h2>Execution trace</h2>
 <pre><?php foreach($frames as $frame) echo $frame, PHP_EOL ?></pre>
 <h2>Function calls</h2>
-<pre><?php foreach($calls as $call) echo $call, PHP_EOL ?></pre>
+<table id="callstable" style="width: 400px; margin: 16px"></table>
 
 </div>
+
+<?php 
+
+//$calls = array('responseData' => $calls);
+
+?>
+
+<script type="text/javascript">
+window.addEvent('load', function(){
+	var initData = <?php echo json_encode($calls) ?>;
+    var callscmu = [
+			{
+				'title': _t('Name'),
+				'dataIndex': 'function',
+				'parser': zGrid2.prototype.string,
+				'width': '100%',
+				'sortable': true,
+				'sortBy': 'function'
+			},
+			{
+				'title': _t('#'),
+				'dataIndex': 'count',
+				'parser': zGrid2.prototype.string,
+				'width': '30px',
+				'sortable': true,
+				'sortBy': 'count'
+			}
+    	];
+
+        <?php
+								$options = array (
+										'idColumn' => 'id',
+                                        'rowExpand' => false,
+                                        'description' => false,
+								);
+								?>
+        callsgrid = <?php echo $this->zGrid2('callstable', 'callscmu', $options); ?>
+        callsgrid.setData(initData);    
+});
+
+</script>

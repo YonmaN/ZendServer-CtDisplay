@@ -30,6 +30,7 @@ class CtDisplayController extends AbstractActionController implements ConfigAwar
         $metadata = array();
         $frames = array();
         $calls = array();
+        $callIndex = 0;
         while (! $file->eof()) {
             $line = trim($file->current());
             $file->next();
@@ -52,13 +53,8 @@ class CtDisplayController extends AbstractActionController implements ConfigAwar
             	    $frames[] = "{$indent}{$info[1]} on {$info[2]}:{$info[3]}";
                     break;
                 case 'CALLS':
-                    if ($info[0] != '{main}') {
-                        if ($info[1] == 1) {
-                            $calls[] = "{$info[0]} was called once";
-                        } else {
-                    	    $calls[] = "{$info[0]} was called {$info[1]} times";
-                        }
-                    }
+                    $callIndex ++;
+                    $calls[] = array('id' => $callIndex, 'function' => $info[0], 'count' => $info[1]);
                 	break;
             	case false:
                 default:
