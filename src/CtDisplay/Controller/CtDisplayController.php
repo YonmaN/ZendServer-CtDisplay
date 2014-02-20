@@ -10,11 +10,39 @@
 namespace CtDisplay\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use Application\ConfigAwareInterface;
+use Zend\Config\Config;
+use ZendServer\Set;
+use ZendServer\FS\FS;
 
-class CtDisplayController extends AbstractActionController
+class CtDisplayController extends AbstractActionController implements ConfigAwareInterface
 {
+    /**
+     * @var Config
+     */
+    private $config;
+    
     public function indexAction()
     {
-        return array();
+        $file = FS::getFileObject(FS::createPath($this->config['filepath'], 'hhvm.trace'), 'r');
+        
+        $metadata = $file->current();
+        $file->next();
+        return array('frames' => $file, 'metadata' => $metadata);
     }
+    
+	/* (non-PHPdoc)
+	 * @see \Application\ConfigAwareInterface::getAwareNamespace()
+	 */
+	public function getAwareNamespace() {
+		return array('ctdisplay');
+	}
+
+	/* (non-PHPdoc)
+	 * @see \Application\ConfigAwareInterface::setConfig()
+	 */
+	public function setConfig($config) {
+		$this->config = $config;
+	}
+
 }

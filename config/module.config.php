@@ -22,5 +22,8 @@ return array(
 			    )
 		    )
 	    )
-    )
+    ),
+    'ctdisplay' => array(
+		'filepath' => get_cfg_var('zend.data_dir')
+	)
 );
