@@ -50,7 +50,7 @@ class CtDisplayController extends AbstractActionController implements ConfigAwar
             	    break;
             	case 'CALLSTACK':
             	    $indent = str_repeat(' ', $info[0]);
-            	    $frames[] = "{$indent}{$info[1]} on {$info[2]}:{$info[3]}";
+            	    $frames[] = "{$indent}{$info[1]} on {$info[2]}:{$info[3]}</font>";
                     break;
                 case 'CALLS':
                     $callIndex ++;

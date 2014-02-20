@@ -6,7 +6,22 @@
 <h2>Request information</h2>
 <pre><?php echo $metadata ?></pre>
 <h2>Execution trace</h2>
-<pre><?php foreach($frames as $frame) echo $frame, PHP_EOL ?></pre>
+<pre>
+<?php foreach($frames as $frame): ?>
+<?php
+    $prefix = '';
+    $suffix = '';
+    if (strpos($frame, '***ERROR***') !== false) {
+        $prefix = '<font style="color:red">';
+        $suffix = '</font>';
+    } elseif(strpos($frame, '***WARNING***') !== false) {
+        $prefix = '<font style="color:gold">';
+        $suffix = '</font>';
+    }
+?>
+<?php echo "{$prefix}{$frame}{$suffix}", PHP_EOL ?>
+<?php endforeach ?>
+</pre>
 <h2>Function calls</h2>
 <table id="callstable" style="width: 400px; margin: 16px"></table>
 
